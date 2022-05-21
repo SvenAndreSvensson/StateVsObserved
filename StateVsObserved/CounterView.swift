@@ -1,33 +1,18 @@
 import SwiftUI
 
-final class CounterViewModel: ObservableObject {
-    @Published var count = 0
-
-    func incrementCounter() {
-        count += 1
-    }
+protocol CounterViewActions {
+    func incrementCounter()
 }
 
-
-// make use of the observable object publisher and send a change signal manually
-//final class CounterViewModel: ObservableObject {
-//    private(set) var count = 0
-//
-//    func incrementCounter() {
-//        count += 1
-//        objectWillChange.send()
-//    }
-//}
-
 struct CounterView: View {
-     @ObservedObject var viewModel = CounterViewModel()
-//    @StateObject var viewModel = CounterViewModel()
+    var count: Int = 0
+    var actions: CounterViewActions?
 
     var body: some View {
         VStack {
-            Text("Count is: \(viewModel.count)")
+            Text("Count is: \(count)")
             Button("Increment Counter") {
-                viewModel.incrementCounter()
+                actions?.incrementCounter()
             }
         }
     }
@@ -35,7 +20,7 @@ struct CounterView: View {
 
 struct CounterView_Previews: PreviewProvider {
     static var previews: some View {
-        CounterView()
+        CounterView(count: 0, actions: nil)
     }
 }
 

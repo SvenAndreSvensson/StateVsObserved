@@ -1,18 +1,27 @@
 import SwiftUI
 
+protocol RandomNumberViewActions {
+    func getRandomNumber()
+}
+
 struct RandomNumberView: View {
-    @State var randomNumber = 0
-    
+    var randomNumber = 0
+    var actions: RandomNumberViewActions?
+
     var body: some View {
         VStack {
             VStack {
                 Text("Random number is: \(randomNumber)")
                 Button("Randomize number") {
-                    randomNumber = (0..<1000).randomElement()!
+                    actions?.getRandomNumber()
                 }
             }.padding(.bottom)
-            
-            CounterView()
         }
+    }
+}
+
+struct RandomNumberView_Previews: PreviewProvider {
+    static var previews: some View {
+        RandomNumberView(randomNumber: 0, actions: nil)
     }
 }
